@@ -14,7 +14,8 @@ matchRoute.get('/', async (req, res) => {
 
     if (!parsed.success) {
         return res.status(400).json({
-            error: 'Invalid limit parsed'
+            error: 'Invalid limit parsed',
+            details: parsed.error.issues
         })
     }
 
@@ -42,7 +43,7 @@ matchRoute.post('/', async (req, res) => {
     if (!parsedBody.success) {
         return res.status(400).json({
             error: 'Invalid Body',
-            details: JSON.stringify(parsedBody.error)
+            details: parsedBody.error.issues
         })
     }
 
