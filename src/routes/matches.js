@@ -14,7 +14,7 @@ matchRoute.get('/', async (req, res) => {
 
     if (!parsed.success) {
         return res.status(400).json({
-            error: 'Missing matchId'
+            error: 'Invalid limit parsed'
         })
     }
 
@@ -28,7 +28,7 @@ matchRoute.get('/', async (req, res) => {
             data: data
         })
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             error: error.message
         })
     }
@@ -40,7 +40,7 @@ matchRoute.post('/', async (req, res) => {
     const parsedBody = createMatchSchema.safeParse(req.body)
 
     if (!parsedBody.success) {
-        res.status(400).json({
+        return res.status(400).json({
             error: 'Invalid Body',
             details: JSON.stringify(parsedBody.error)
         })
@@ -66,7 +66,7 @@ matchRoute.post('/', async (req, res) => {
         })
 
     } catch(error) {
-        res.status(400).json({
+        res.status(500).json({
             error: error,
         })
     }
