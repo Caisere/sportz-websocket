@@ -14,6 +14,7 @@ matchRoute.get('/', async (req, res) => {
 
     if (!parsed.success) {
         return res.status(400).json({
+            status: 'fail',
             error: 'Invalid limit parsed',
             details: parsed.error.issues
         })
@@ -24,7 +25,7 @@ matchRoute.get('/', async (req, res) => {
     try {
         const data = await db.select().from(matches).orderBy(desc(matches.created_at)).limit(limit)
         res.status(200).json({
-            success: true,
+            status: 'success',
             message: 'Successfully fetch matches',
             data: data
         })
@@ -37,11 +38,11 @@ matchRoute.get('/', async (req, res) => {
 
 matchRoute.post('/', async (req, res) => {
 
-
     const parsedBody = createMatchSchema.safeParse(req.body)
 
     if (!parsedBody.success) {
         return res.status(400).json({
+            status: 'fail',
             error: 'Invalid Body',
             details: parsedBody.error.issues
         })
