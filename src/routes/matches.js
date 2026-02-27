@@ -46,8 +46,6 @@ matchRoute.post('/', async (req, res) => {
         })
     }
 
-    const d = parsedBody.data
-
     const {data: {startTime, endTime, homeScore, awayScore}} = parsedBody;
 
     try {
