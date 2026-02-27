@@ -1,4 +1,4 @@
-import {integer, jsonb, pgEnum, pgTable, serial, text, timestamp} from 'drizzle-orm/pg-core';
+import {foreignKey, integer, jsonb, pgEnum, pgTable, serial, text, timestamp} from 'drizzle-orm/pg-core';
 
 export const matchStatusEnum = pgEnum('match_status', ['scheduled', 'live', 'finished'])
 
@@ -15,17 +15,23 @@ export const matches = pgTable('matches', {
     created_at: timestamp('created_at').notNull().defaultNow(),
 })
 
-export const commentary = pgTable('commentary', {
-    id: serial('id').primaryKey(),
-    matchId: integer('match_id').notNull().references(() => matches.id),
-    minute: integer('minute'),
-    sequence: integer('sequence'),
-    period: text('period'),
-    eventType: text('event_type'),
-    actor: text('actor'),
-    team: text('team'),
-    message: text('message').notNull(),
-    metadata: jsonb('metadata'),
-    tags: text('tags').array(),
-    createdAt: timestamp('createdAt').notNull().defaultNow(),
-})
+export const commentaries = pgTable("commentaries", {
+    id: serial().primaryKey().notNull(),
+    matchId: integer("match_id").notNull(),
+    minute: integer(),
+    sequence: integer(),
+    period: text(),
+    eventType: text("event_type"),
+    actor: text(),
+    team: text(),
+    message: text().notNull(),
+    metadata: jsonb(),
+    tags: text().array(),
+    createdAt: timestamp({ mode: 'string' }).defaultNow().notNull(),
+}, (table) => [
+    foreignKey({
+        columns: [table.matchId],
+        foreignColumns: [matches.id],
+        name: "commentaries_match_id_matches_id_fk"
+    }),
+]);

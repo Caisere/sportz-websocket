@@ -15,6 +15,13 @@
       "when": 1772150886706,
       "tag": "0001_minor_masked_marvel",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1772233287406,
+      "tag": "0002_steady_jean_grey",
+      "breakpoints": true
     }
   ]
 }
