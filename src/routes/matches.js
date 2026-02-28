@@ -7,8 +7,7 @@ import { db } from "../db/db.js";
 import { matches } from "../db/schema.js";
 import { getMatchStatus } from "../utils/match-status.js";
 import { desc } from "drizzle-orm";
-import app from "../server.js";
-// import app from "express/lib/application.js";
+
 
 const matchRoute = express.Router();
 
@@ -73,9 +72,9 @@ matchRoute.post("/", async (req, res) => {
       })
       .returning();
 
-    if(app.locals.broadcastMatchCreated) {
+    if(req.app.locals.broadcastMatchCreated) {
       console.log('broadcast match creation function found!')
-      app.locals.broadcastMatchCreated(match)
+      req.app.locals.broadcastMatchCreated(match)
     }
 
     return res.status(201).json({

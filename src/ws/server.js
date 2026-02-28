@@ -13,7 +13,7 @@ function broadcast(wss, payload) {
     // iterate over all the connected client
     for (const client of wss.clients) {
         // check maybe connection is open
-        if (client.readyState !== WebSocket.OPEN) return;
+        if (client.readyState !== WebSocket.OPEN) continue;
 
         client.send(JSON.stringify(payload));
     }
