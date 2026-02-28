@@ -7,6 +7,8 @@ import { db } from "../db/db.js";
 import { matches } from "../db/schema.js";
 import { getMatchStatus } from "../utils/match-status.js";
 import { desc } from "drizzle-orm";
+import app from "../server.js";
+// import app from "express/lib/application.js";
 
 const matchRoute = express.Router();
 
@@ -58,9 +60,8 @@ matchRoute.post("/", async (req, res) => {
     data: { startTime, endTime, homeScore, awayScore },
   } = parsedBody;
 
-
   try {
-    const event = await db
+    const match = await db
       .insert(matches)
       .values({
         ...parsedBody.data,
@@ -72,13 +73,18 @@ matchRoute.post("/", async (req, res) => {
       })
       .returning();
 
+    if(app.locals.broadcastMatchCreated) {
+      console.log('broadcast match creation function found!')
+      app.locals.broadcastMatchCreated(match)
+    }
+
     return res.status(201).json({
       message: "Event Created",
-      data: event,
+      data: match,
     });
   } catch (error) {
     res.status(500).json({
-      error: error,
+      error: error.message,
     });
   }
 });
