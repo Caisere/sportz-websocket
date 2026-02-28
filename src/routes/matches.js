@@ -72,9 +72,12 @@ matchRoute.post("/", async (req, res) => {
       })
       .returning();
 
-    if(req.app.locals.broadcastMatchCreated) {
-      console.log('broadcast match creation function found!')
-      req.app.locals.broadcastMatchCreated(match)
+    if (typeof req.app.locals.broadcastMatchCreated === "function") {
+      try {
+        req.app.locals.broadcastMatchCreated(match);
+      } catch (broadcastError) {
+        console.error("broadcastMatchCreated failed:", broadcastError.message);
+      }
     }
 
     return res.status(201).json({
