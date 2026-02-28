@@ -60,7 +60,7 @@ matchRoute.post("/", async (req, res) => {
   } = parsedBody;
 
   try {
-    const match = await db
+    const [match] = await db
       .insert(matches)
       .values({
         ...parsedBody.data,
